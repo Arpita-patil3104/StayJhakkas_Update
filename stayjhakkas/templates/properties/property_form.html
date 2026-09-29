@@ -1,0 +1,574 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add New PG | StayJhakkas</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+    <style>
+
+        .form-page {
+            min-height: 100vh;
+            background: #f8f7fb;
+            padding: 50px 8%;
+        }
+
+        .form-container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 45px;
+            border-radius: 22px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+        }
+
+        .form-header {
+            margin-bottom: 35px;
+        }
+
+        .form-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #171326;
+        }
+
+        .form-header p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            color: #6c3bd1;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #292333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #6c3bd1;
+            box-shadow: 0 0 0 3px rgba(108,59,209,0.08);
+        }
+
+        .help-text {
+            margin-top: 6px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .error-list {
+            margin-top: 6px;
+            color: #d93025;
+            font-size: 13px;
+        }
+
+        .submit-area {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid #eeeeee;
+            display: flex;
+            gap: 15px;
+        }
+
+        .submit-button {
+            border: none;
+            padding: 14px 28px;
+            border-radius: 9px;
+            background: #6c3bd1;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #5425aa;
+        }
+
+        .cancel-button {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 9px;
+            background: #eeeeee;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .approval-note {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 12px;
+            background: #f3edff;
+            color: #4c3475;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+
+            .form-page {
+                padding: 30px 5%;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .form-header h1 {
+                font-size: 30px;
+            }
+
+            .submit-area {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        🏠 StayJhakkas
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/properties/">
+            Browse PGs
+        </a>
+
+        <a href="/accounts/dashboard/">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="form-page">
+
+
+    <div class="form-container">
+
+
+        <!-- HEADER -->
+
+        <div class="form-header">
+
+            <h1>
+                🏠 Add Your PG
+            </h1>
+
+            <p>
+                Add your PG details to StayJhakkas.
+                Once submitted, the listing will be
+                reviewed before becoming visible to tenants.
+            </p>
+
+        </div>
+
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            <!-- BASIC INFORMATION -->
+
+            <div class="section-title">
+
+                <h2>
+                    1. Basic Information
+                </h2>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        PG Name
+                    </label>
+
+                    {{ form.title }}
+
+                    {{ form.title.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        URL Slug
+                    </label>
+
+                    {{ form.slug }}
+
+                    <div class="help-text">
+                        Example:
+                        luxury-girls-pg-near-coep
+                    </div>
+
+                    {{ form.slug.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Property Type
+                    </label>
+
+                    {{ form.property_type }}
+
+                    {{ form.property_type.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Suitable For
+                    </label>
+
+                    {{ form.gender }}
+
+                    {{ form.gender.errors }}
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {{ form.description.errors }}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <div class="section-title">
+
+                <h2>
+                    2. Location
+                </h2>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        City
+                    </label>
+
+                    {{ form.city }}
+
+                    {{ form.city.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Locality
+                    </label>
+
+                    {{ form.locality }}
+
+                    {{ form.locality.errors }}
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Complete Address
+                    </label>
+
+                    {{ form.address }}
+
+                    {{ form.address.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Latitude
+                    </label>
+
+                    {{ form.latitude }}
+
+                    <div class="help-text">
+                        Example: 18.5204
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Longitude
+                    </label>
+
+                    {{ form.longitude }}
+
+                    <div class="help-text">
+                        Example: 73.8567
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- PRICING -->
+
+            <div class="section-title">
+
+                <h2>
+                    3. Pricing
+                </h2>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Monthly Rent (₹)
+                    </label>
+
+                    {{ form.monthly_rent }}
+
+                    {{ form.monthly_rent.errors }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Security Deposit (₹)
+                    </label>
+
+                    {{ form.security_deposit }}
+
+                    {{ form.security_deposit.errors }}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- AMENITIES -->
+
+            <div class="section-title">
+
+                <h2>
+                    4. Amenities
+                </h2>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Amenities
+                    </label>
+
+                    {{ form.amenities }}
+
+                    <div class="help-text">
+                        Example:
+                        ["WiFi", "Food", "AC", "Laundry", "Security"]
+                    </div>
+
+                    {{ form.amenities.errors }}
+
+                </div>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="section-title">
+
+                <h2>
+                    5. PG Image
+                </h2>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Cover Image
+                    </label>
+
+                    {{ form.cover_image }}
+
+                    <div class="help-text">
+                        Upload a clear image of your PG.
+                    </div>
+
+                    {{ form.cover_image.errors }}
+
+                </div>
+
+            </div>
+
+
+            <!-- APPROVAL -->
+
+            <div class="approval-note">
+
+                🔐 <strong>Admin Verification:</strong>
+
+                Your PG will not immediately appear
+                publicly. StayJhakkas admin will verify
+                the listing before approving it.
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="submit-area">
+
+                <button type="submit"
+                        class="submit-button">
+
+                    Submit PG for Approval
+
+                </button>
+
+
+                <a href="/accounts/dashboard/"
+                   class="cancel-button">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

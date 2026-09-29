@@ -1,0 +1,520 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Owner Dashboard | StayJhakkas</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f4fb;
+            color: #1f1f2e;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #171329;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .logout {
+            text-decoration: none;
+            background: white;
+            color: #171329;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* MAIN */
+        .container {
+            width: 90%;
+            max-width: 1250px;
+            margin: 35px auto 60px;
+        }
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #6d45e5,
+                #8b5cf6
+            );
+            color: white;
+            border-radius: 22px;
+            padding: 38px;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 35px rgba(80, 50, 180, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #eee9ff;
+            font-size: 16px;
+        }
+
+        /* STATISTICS */
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .stat-icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* FEATURE CARDS */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 7px 25px rgba(0,0,0,0.07);
+            transition: 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-content h2 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .card-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .card-button {
+            display: inline-block;
+            background: #6d45e5;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* DIFFERENT CARD BUTTONS */
+        .green {
+            background: #16a34a;
+        }
+
+        .orange {
+            background: #ea580c;
+        }
+
+        .pink {
+            background: #e11d48;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 45px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 4%;
+            }
+
+            .welcome {
+                display: none;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .hero {
+                padding: 28px 22px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .card-image {
+                height: 190px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        Stay<span>Jhakkas</span>
+    </div>
+
+    <div class="nav-right">
+
+        <div class="welcome">
+            Welcome, {{ request.user.username }}
+        </div>
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <h1>🏠 Owner Dashboard</h1>
+
+        <p>
+            Manage your PG properties, rooms, beds and tenant bookings
+            from one place.
+        </p>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+    <h2 class="section-title">
+        📊 Dashboard Overview
+    </h2>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">🏠</div>
+
+            <h3>
+                {{ total_properties }}
+            </h3>
+
+            <p>Total PGs</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">🏢</div>
+
+            <h3>
+                {{ total_rooms }}
+            </h3>
+
+            <p>Total Rooms</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">🛏️</div>
+
+            <h3>
+                {{ total_beds }}
+            </h3>
+
+            <p>Total Beds</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+
+            <h3>
+                {{ available_beds }}
+            </h3>
+
+            <p>Available Beds</p>
+        </div>
+
+    </div>
+
+
+    <!-- BOOKING STATISTICS -->
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+
+            <h3>
+                {{ pending_bookings }}
+            </h3>
+
+            <p>Pending Bookings</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+
+            <h3>
+                {{ approved_bookings }}
+            </h3>
+
+            <p>Approved Bookings</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+
+            <h3>
+                {{ total_bookings }}
+            </h3>
+
+            <p>Total Bookings</p>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon">💰</div>
+
+            <h3>₹</h3>
+
+            <p>Property Earnings</p>
+        </div>
+
+    </div>
+
+
+    <!-- MAIN DASHBOARD CARDS -->
+    <h2 class="section-title">
+        🚀 Manage Your StayJhakkas
+    </h2>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- MY PG -->
+        <a href="{% url 'property_list' %}" class="dashboard-card">
+
+            <img
+                class="card-image"
+                src="https://images.unsplash.com/photo-1560185008-b033106af5c3?auto=format&fit=crop&w=1000&q=80"
+                alt="Modern PG Room"
+            >
+
+            <div class="card-content">
+
+                <h2>🏠 My PGs</h2>
+
+                <p>
+                    View your PG properties, room information,
+                    availability and accommodation details.
+                </p>
+
+                <span class="card-button">
+                    View PGs →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- ADD PG -->
+        <a href="{% url 'add_property' %}" class="dashboard-card">
+
+            <img
+                class="card-image"
+                src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=80"
+                alt="Beautiful Property"
+            >
+
+            <div class="card-content">
+
+                <h2>➕ Add New PG</h2>
+
+                <p>
+                    Add a new PG with property details,
+                    rent, amenities, location and photos.
+                </p>
+
+                <span class="card-button green">
+                    Add Property →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- BOOKING REQUESTS -->
+        <a href="{% url 'owner_bookings' %}" class="dashboard-card">
+
+            <img
+                class="card-image"
+                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80"
+                alt="Booking Management"
+            >
+
+            <div class="card-content">
+
+                <h2>📅 Booking Requests</h2>
+
+                <p>
+                    View tenant booking requests and
+                    approve or reject reservations.
+                </p>
+
+                <span class="card-button orange">
+                    Manage Bookings →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- PAYMENTS -->
+        <div class="dashboard-card">
+
+            <img
+                class="card-image"
+                src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1000&q=80"
+                alt="Payments and Earnings"
+            >
+
+            <div class="card-content">
+
+                <h2>💰 Payments & Earnings</h2>
+
+                <p>
+                    Keep this section ready for future payment
+                    and earnings management.
+                </p>
+
+                <span class="card-button pink">
+                    Coming Soon
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+        <p>
+            © 2026 StayJhakkas — Smart PG & Accommodation Platform
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

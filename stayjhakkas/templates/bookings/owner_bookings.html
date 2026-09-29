@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Requests | StayJhakkas</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+            font-size: 34px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .tenant {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .pg-name {
+            color: #6c63ff;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        .status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .pending {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .approved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .rejected {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .cancelled {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .completed {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(170px, 1fr)
+            );
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .amount {
+            color: #6c63ff;
+        }
+
+        .message {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+        button {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .approve {
+            background: #16a34a;
+            color: white;
+        }
+
+        .reject {
+            background: #dc2626;
+            color: white;
+        }
+
+        .view {
+            background: #eef2ff;
+            color: #4f46e5;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 70px 30px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+        }
+
+        @media (max-width: 700px) {
+
+            .top {
+                flex-direction: column;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            button,
+            .view {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        🏠 StayJhakkas
+    </div>
+
+    <div>
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'property_list' %}">
+            Find PG
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            Booking Requests
+        </h1>
+
+        <p>
+            Manage tenants who have requested your PG.
+        </p>
+
+    </div>
+
+
+    {% if bookings %}
+
+        {% for booking in bookings %}
+
+        <div class="booking-card">
+
+
+            <div class="top">
+
+                <div>
+
+                    <div class="tenant">
+                        👤 {{ booking.tenant.username }}
+                    </div>
+
+                    <div class="pg-name">
+                        🏠 {{ booking.property.title }}
+                    </div>
+
+                </div>
+
+
+                <div class="status {{ booking.status }}">
+                    {{ booking.get_status_display }}
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Booking ID
+                    </div>
+
+                    <div class="value">
+                        #{{ booking.id }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Room
+                    </div>
+
+                    <div class="value">
+
+                        {% if booking.room %}
+                            {{ booking.room.room_number }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Bed
+                    </div>
+
+                    <div class="value">
+
+                        {% if booking.bed %}
+                            {{ booking.bed.bed_number }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Move-in Date
+                    </div>
+
+                    <div class="value">
+                        {{ booking.move_in_date }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Duration
+                    </div>
+
+                    <div class="value">
+                        {{ booking.duration_months }} months
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Monthly Rent
+                    </div>
+
+                    <div class="value">
+                        ₹{{ booking.monthly_rent }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Security Deposit
+                    </div>
+
+                    <div class="value">
+                        ₹{{ booking.security_deposit }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Total Amount
+                    </div>
+
+                    <div class="value amount">
+                        ₹{{ booking.get_total_amount }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            {% if booking.tenant_message %}
+
+            <div class="message">
+
+                <strong>
+                    Tenant Message:
+                </strong>
+
+                {{ booking.tenant_message }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if booking.status == "pending" %}
+
+            <div class="actions">
+
+
+                <form
+                    method="POST"
+                    action="{% url 'approve_booking' booking.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="approve"
+                    >
+                        ✅ Approve
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="POST"
+                    action="{% url 'reject_booking' booking.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="reject"
+                    >
+                        ❌ Reject
+                    </button>
+
+                </form>
+
+
+                <a
+                    href="{% url 'booking_detail' booking.id %}"
+                    class="view"
+                >
+                    View Details
+                </a>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📋
+            </div>
+
+            <h2>
+                No Booking Requests
+            </h2>
+
+            <p>
+                You currently have no tenant booking requests.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+</body>
+
+</html>

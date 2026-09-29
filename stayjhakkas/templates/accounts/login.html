@@ -1,0 +1,214 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | StayJhakkas</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <style>
+
+        .auth-page {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f7fb;
+            padding: 50px 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-card h1 {
+            margin-bottom: 8px;
+        }
+
+        .auth-card > p {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-field {
+            margin-bottom: 20px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-field input:focus {
+            border-color: #6c3bd1;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #6c3bd1;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: #5425aa;
+        }
+
+        .error-message {
+            background: #fff0f0;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        .register-link a {
+            color: #6c3bd1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        🏠 StayJhakkas
+    </div>
+
+</header>
+
+
+<section class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>
+            Welcome Back 👋
+        </h1>
+
+        <p>
+            Login to your StayJhakkas account.
+        </p>
+
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <div class="form-field">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="register-link">
+
+            Don't have an account?
+
+            <a href="/accounts/register/">
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</body>
+
+</html>

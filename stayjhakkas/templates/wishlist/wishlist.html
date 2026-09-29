@@ -1,0 +1,424 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Wishlist | StayJhakkas</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #f7f8fc;
+            font-family: Arial, sans-serif;
+        }
+
+        .wishlist-container {
+            max-width: 1150px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+
+        .wishlist-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .wishlist-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .wishlist-header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        /* GRID */
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+
+            gap: 25px;
+        }
+
+        /* CARD */
+
+        .wishlist-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        /* IMAGE */
+
+        .wishlist-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .no-image {
+            width: 100%;
+            height: 210px;
+
+            background: #eeeeee;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 55px;
+        }
+
+        /* CONTENT */
+
+        .wishlist-content {
+            padding: 20px;
+        }
+
+        .wishlist-content h2 {
+            margin: 0 0 12px;
+            font-size: 21px;
+            color: #222;
+        }
+
+        .location {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .rent {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .beds {
+            color: #555;
+            margin-bottom: 18px;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+
+            padding: 11px 15px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            color: white;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        .view-btn {
+            background: #6c5ce7;
+        }
+
+        .view-btn:hover {
+            background: #5848d6;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+        }
+
+        .remove-btn:hover {
+            background: #cf3729;
+        }
+
+        /* EMPTY WISHLIST */
+
+        .empty {
+            background: white;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .empty p {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .browse-btn {
+            display: inline-block;
+
+            padding: 12px 24px;
+
+            background: #6c5ce7;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        .browse-btn:hover {
+            background: #5848d6;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .wishlist-container {
+                margin: 25px auto;
+                padding: 15px;
+            }
+
+            .wishlist-header h1 {
+                font-size: 28px;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="wishlist-container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="wishlist-header">
+
+        <h1>❤️ My Wishlist</h1>
+
+        <p>
+            Your favourite PG accommodations
+        </p>
+
+    </div>
+
+
+    <!-- CHECK IF WISHLIST HAS ITEMS -->
+
+    {% if wishlists %}
+
+
+        <div class="wishlist-grid">
+
+
+            {% for item in wishlists %}
+
+
+                <div class="wishlist-card">
+
+
+                    <!-- PROPERTY IMAGE -->
+
+                    {% if item.property.cover_image %}
+
+                        <img
+                            src="{{ item.property.cover_image.url }}"
+                            alt="{{ item.property.title }}"
+                            class="wishlist-image"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            🏠
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- PROPERTY INFORMATION -->
+
+                    <div class="wishlist-content">
+
+
+                        <h2>
+                            {{ item.property.title }}
+                        </h2>
+
+
+                        <div class="location">
+
+                            📍
+                            {{ item.property.locality }},
+                            {{ item.property.city }}
+
+                        </div>
+
+
+                        <div class="rent">
+
+                            💰
+                            ₹{{ item.property.monthly_rent }}/month
+
+                        </div>
+
+
+                        <div class="beds">
+
+                            🛏️
+                            {{ item.property.available_beds }}
+                            beds available
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="buttons">
+
+
+                            <!-- VIEW PROPERTY -->
+
+                            <a
+                                href="{% url 'property_detail' item.property.slug %}"
+                                class="btn view-btn"
+                            >
+                                View PG
+                            </a>
+
+
+                            <!-- REMOVE FROM WISHLIST -->
+
+                            <a
+                                href="{% url 'toggle_wishlist' property_id=item.property.id %}"
+                                class="btn remove-btn"
+                            >
+                                Remove
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY WISHLIST -->
+
+        <div class="empty">
+
+
+            <div class="empty-icon">
+                💔
+            </div>
+
+
+            <h2>
+                Your Wishlist is Empty
+            </h2>
+
+
+            <p>
+                Save your favourite PGs and they will appear here.
+            </p>
+
+
+            <a
+                href="{% url 'property_list' %}"
+                class="browse-btn"
+            >
+                🔍 Browse PGs
+            </a>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>

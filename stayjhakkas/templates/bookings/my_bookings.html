@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings | StayJhakkas</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fb;
+            color: #171329;
+        }
+
+        .navbar {
+            background: white;
+            padding: 20px 7%;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .logo {
+            color: #171329;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .property-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .location {
+            color: #777;
+            margin-top: 8px;
+        }
+
+        .status {
+            padding: 9px 18px;
+            border-radius: 20px;
+            background: #fff4e5;
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .detail {
+            background: #f7f8fc;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .total {
+            color: #6d45e5;
+            font-size: 18px;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .booking-button {
+            background: #6d45e5;
+            color: white;
+        }
+
+        .booking-button:hover {
+            background: #5734c5;
+        }
+
+        .property-button {
+            background: #eef0ff;
+            color: #5141c9;
+            border: 1px solid #dcdfff;
+        }
+
+        .property-button:hover {
+            background: #dddfff;
+        }
+
+        .empty {
+            background: white;
+            padding: 60px 30px;
+            text-align: center;
+            border-radius: 18px;
+        }
+
+        .find-pg {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 24px;
+            background: #6d45e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+        }
+
+        @media (max-width: 900px) {
+            .details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .booking-header {
+                flex-direction: column;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .button {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🏠 StayJhakkas
+    </a>
+
+</nav>
+
+
+<div class="container">
+
+    <h1>📅 My Bookings</h1>
+
+
+    {% if bookings %}
+
+        {% for booking in bookings %}
+
+        <div class="booking-card">
+
+
+            <div class="booking-header">
+
+                <div>
+
+                    <div class="property-title">
+                        {{ booking.property.title }}
+                    </div>
+
+                    <div class="location">
+                        📍 {{ booking.property.locality }},
+                        {{ booking.property.city }}
+                    </div>
+
+                </div>
+
+
+                <div class="status">
+                    {{ booking.get_status_display }}
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Booking ID
+                    </div>
+
+                    <div class="value">
+                        #{{ booking.id }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Room
+                    </div>
+
+                    <div class="value">
+
+                        {% if booking.room %}
+                            {{ booking.room.room_number }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Bed
+                    </div>
+
+                    <div class="value">
+
+                        {% if booking.bed %}
+                            {{ booking.bed.bed_number }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Move-in Date
+                    </div>
+
+                    <div class="value">
+                        {{ booking.move_in_date|date:"M d, Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Duration
+                    </div>
+
+                    <div class="value">
+                        {{ booking.duration_months }} months
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Monthly Rent
+                    </div>
+
+                    <div class="value">
+                        ₹{{ booking.monthly_rent }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Security Deposit
+                    </div>
+
+                    <div class="value">
+                        ₹{{ booking.security_deposit }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="label">
+                        Total Amount
+                    </div>
+
+                    <div class="value total">
+                        ₹{{ booking.total_amount }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <!-- BOOKING DETAILS -->
+                <a
+                    href="/bookings/{{ booking.id }}/"
+                    class="button booking-button"
+                >
+                    📋 View Booking
+                </a>
+
+
+                <!-- ACTUAL PG DETAILS -->
+                <a
+                    href="/properties/{{ booking.property.slug }}/"
+                    class="button property-button"
+                >
+                    🏠 View PG
+                </a>
+
+            </div>
+
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No bookings yet</h2>
+
+            <p>
+                You haven't booked any PG yet.
+            </p>
+
+            <a
+                href="/properties/"
+                class="find-pg"
+            >
+                🔎 Find PGs
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

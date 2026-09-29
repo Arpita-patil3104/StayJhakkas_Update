@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Booking | StayJhakkas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #17132b;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .page {
+            padding: 60px 7%;
+        }
+
+        .booking-container {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .property-card h1 {
+            font-size: 34px;
+            margin-top: 0;
+        }
+
+        .location {
+            color: #666;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: bold;
+            color: #6c3bd1;
+            margin-bottom: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .label {
+            color: #777;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        .form-description {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .field select,
+        .field input,
+        .field textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d9d9d9;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .field select:focus,
+        .field input:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: #6c3bd1;
+        }
+
+        .help-text {
+            color: #777;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            background: #6c3bd1;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #5425aa;
+        }
+
+        .no-beds {
+            background: #fff3cd;
+            color: #856404;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f3edff;
+            border-radius: 10px;
+            color: #5a35a8;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+
+            .navbar {
+                padding: 18px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        🏠 StayJhakkas
+    </div>
+
+    <a
+        href="{% url 'property_detail' property.slug %}"
+        class="back-link"
+    >
+        ← Back to PG
+    </a>
+
+</header>
+
+
+<main class="page">
+
+    <div class="booking-container">
+
+
+        <!-- =========================================
+             PROPERTY INFORMATION
+        ========================================== -->
+
+        <div class="card property-card">
+
+            <h1>
+                {{ property.title }}
+            </h1>
+
+            <div class="location">
+                📍 {{ property.locality }}, {{ property.city }}
+            </div>
+
+            <div class="price">
+                ₹{{ property.monthly_rent }}
+                <span style="font-size:16px;color:#777;">
+                    /month
+                </span>
+            </div>
+
+
+            <div class="info-row">
+                <span class="label">
+                    Property Type
+                </span>
+
+                <span class="value">
+                    {{ property.get_property_type_display }}
+                </span>
+            </div>
+
+
+            <div class="info-row">
+                <span class="label">
+                    For
+                </span>
+
+                <span class="value">
+                    {{ property.get_gender_display }}
+                </span>
+            </div>
+
+
+            <div class="info-row">
+                <span class="label">
+                    Security Deposit
+                </span>
+
+                <span class="value">
+                    ₹{{ property.security_deposit }}
+                </span>
+            </div>
+
+
+            <div class="info-row">
+                <span class="label">
+                    Available Beds
+                </span>
+
+                <span class="value">
+                    {{ property.available_beds }}
+                </span>
+            </div>
+
+
+            <div class="security-note">
+                🔐 Your booking request is sent securely to the PG owner.
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             BOOKING FORM
+        ========================================== -->
+
+        <div class="card form-card">
+
+            <h2>
+                Request Your Bed
+            </h2>
+
+            <p class="form-description">
+                Select an available bed and submit your booking request.
+            </p>
+
+
+            {% if no_beds %}
+
+                <div class="no-beds">
+                    ❌ No beds are currently available in this PG.
+                </div>
+
+            {% else %}
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    <!-- BED -->
+
+                    <div class="field">
+
+                        <label for="{{ form.bed.id_for_label }}">
+                            Select Available Bed
+                        </label>
+
+                        {{ form.bed }}
+
+                        {% if form.bed.errors %}
+                            <div class="error">
+                                {{ form.bed.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- MOVE IN DATE -->
+
+                    <div class="field">
+
+                        <label for="{{ form.move_in_date.id_for_label }}">
+                            Move-in Date
+                        </label>
+
+                        {{ form.move_in_date }}
+
+                        {% if form.move_in_date.errors %}
+                            <div class="error">
+                                {{ form.move_in_date.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DURATION -->
+
+                    <div class="field">
+
+                        <label for="{{ form.duration_months.id_for_label }}">
+                            Duration (Months)
+                        </label>
+
+                        {{ form.duration_months }}
+
+                        {% if form.duration_months.errors %}
+                            <div class="error">
+                                {{ form.duration_months.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="field">
+
+                        <label for="{{ form.tenant_message.id_for_label }}">
+                            Message to Owner
+                        </label>
+
+                        {{ form.tenant_message }}
+
+                        {% if form.tenant_message.errors %}
+                            <div class="error">
+                                {{ form.tenant_message.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- TOTAL -->
+
+                    <div
+                        style="
+                            background:#f8f5ff;
+                            padding:18px;
+                            border-radius:12px;
+                            margin-bottom:20px;
+                        "
+                    >
+
+                        <div class="info-row">
+                            <span class="label">
+                                Monthly Rent
+                            </span>
+
+                            <span class="value">
+                                ₹{{ property.monthly_rent }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">
+                                Security Deposit
+                            </span>
+
+                            <span class="value">
+                                ₹{{ property.security_deposit }}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        📅 Submit Booking Request
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

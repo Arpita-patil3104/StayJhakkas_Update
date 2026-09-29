@@ -1,0 +1,223 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tenant Dashboard | StayJhakkas</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .dashboard-page {
+            min-height: 85vh;
+            padding: 55px 8%;
+            background: #f8f7fb;
+        }
+
+        .dashboard-header {
+            margin-bottom: 35px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .dashboard-card {
+            display: block;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: #171326;
+            border: 1px solid #eeeeee;
+            transition: 0.25s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-icon {
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-card h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .logout-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 22px;
+            background: #171326;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 850px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        🏠 StayJhakkas
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/properties/">Find PG</a>
+        <a href="/accounts/logout/">Logout</a>
+    </nav>
+
+</header>
+
+
+<main class="dashboard-page">
+
+    <div class="dashboard-header">
+
+        <h1>
+            Welcome, {{ request.user.username }} 👋
+        </h1>
+
+        <p>
+            Find, compare and book your perfect PG.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <a href="/properties/" class="dashboard-card">
+
+            <div class="dashboard-icon">🔎</div>
+
+            <h2>Find a PG</h2>
+
+            <p>
+                Search PGs by location,
+                budget, room type and amenities.
+            </p>
+
+        </a>
+
+
+        <a href="#" class="dashboard-card">
+
+            <div class="dashboard-icon">📍</div>
+
+            <h2>Nearby PGs</h2>
+
+            <p>
+                Discover PGs near your
+                college, workplace or location.
+            </p>
+
+        </a>
+
+
+        <a href="#" class="dashboard-card">
+
+            <div class="dashboard-icon">❤️</div>
+
+            <h2>My Wishlist</h2>
+
+            <p>
+                Save your favourite PGs
+                and check them later.
+            </p>
+
+        </a>
+
+
+        <a href="#" class="dashboard-card">
+
+            <div class="dashboard-icon">📅</div>
+
+            <h2>My Bookings</h2>
+
+            <p>
+                Track booking requests,
+                confirmations and cancellations.
+            </p>
+
+        </a>
+
+
+        <a href="#" class="dashboard-card">
+
+            <div class="dashboard-icon">⭐</div>
+
+            <h2>My Reviews</h2>
+
+            <p>
+                View and manage your
+                PG reviews and ratings.
+            </p>
+
+        </a>
+
+
+        <a href="#" class="dashboard-card">
+
+            <div class="dashboard-icon">⚖️</div>
+
+            <h2>Compare PGs</h2>
+
+            <p>
+                Compare rent, location,
+                amenities and ratings.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <a href="/accounts/logout/" class="logout-button">
+        Logout
+    </a>
+
+</main>
+
+</body>
+</html>
